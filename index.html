@@ -179,6 +179,24 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
         }
 
+        .card-header {
+            background: var(--surface-card);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -221,7 +239,7 @@
             width: 80px;
         }
 
-        /* Home Hero Banner */
+        /* Home Layout & Next Race Hero Card */
         .hero {
             background: linear-gradient(135deg, rgba(18,16,24,0.9), rgba(138,43,226,0.15));
             border: 1px solid var(--border);
@@ -259,6 +277,32 @@
             margin-bottom: 28px;
         }
 
+        .next-race-banner {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(245, 197, 24, 0.08));
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 24px 32px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 25px rgba(245, 197, 24, 0.15);
+        }
+
+        .next-race-info h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .next-race-info p {
+            color: var(--muted);
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
         .btn-primary {
             background: var(--gold);
             color: var(--bg);
@@ -278,6 +322,26 @@
         .btn-primary:hover {
             background: var(--gold-hover);
             transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
         }
 
         /* Schedule List */
@@ -505,6 +569,16 @@
                     <button class="btn-primary" onclick="switchTab('standings', document.querySelectorAll('.nav-btn')[1])">View Standings</button>
                 </div>
             </div>
+
+            <!-- Featured Next Race Area -->
+            <div class="next-race-banner">
+                <div class="next-race-info">
+                    <span style="color: var(--purple); font-family: 'Barlow Condensed'; font-weight: 800; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;">Up Next on the Calendar</span>
+                    <h3 id="home-next-race-name">Race #2: Daytona 500</h3>
+                    <p id="home-next-race-details">Daytona Superspeedway &bull; Laps: TBD</p>
+                </div>
+                <button class="btn-outline" onclick="switchTab('schedule', document.querySelectorAll('.nav-btn')[2])">Full Schedule & Results &rarr;</button>
+            </div>
         </div>
 
         <!-- STANDINGS TAB -->
@@ -596,7 +670,6 @@
         let driversData = [];
         let scheduleData = [];
 
-        // Simple CSV Parser helper
         function parseCSV(text) {
             let lines = text.split('\n');
             return lines.map(line => {
@@ -619,7 +692,6 @@
             });
         }
 
-        // Fetch Live Data from Google Sheet CSV exports
         async function fetchGoogleSheetData() {
             try {
                 // Fetch Points/Stats tab
@@ -629,7 +701,6 @@
                 let pointsRows = parseCSV(pointsText);
 
                 driversData = [];
-                // Process rows starting after headers
                 for (let i = 3; i < pointsRows.length; i++) {
                     let r = pointsRows[i];
                     if (r && r[4] && r[4].length > 0 && r[4] !== 'Driver') {
@@ -672,6 +743,7 @@
                     }
                 }
                 renderSchedule();
+                updateHomeNextRace();
 
             } catch (err) {
                 console.error("Error fetching live spreadsheet data:", err);
@@ -728,6 +800,15 @@
                 `;
                 container.appendChild(card);
             });
+        }
+
+        function updateHomeNextRace() {
+            if (scheduleData.length > 0) {
+                // Find first upcoming race without a winner, or default to first race
+                const nextRace = scheduleData.find(r => !r.winner || r.winner === "TBD") || scheduleData[0];
+                document.getElementById('home-next-race-name').innerText = `Race ${nextRace.raceNo}: ${nextRace.name}`;
+                document.getElementById('home-next-race-details').innerText = `${nextRace.location} • Total Laps: ${nextRace.laps}`;
+            }
         }
 
         function openDriverModal(driver) {
