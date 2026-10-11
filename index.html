@@ -232,8 +232,14 @@
             font-size: 15px;
         }
 
-        tr:hover td {
-            background: rgba(138, 43, 226, 0.05);
+        .driver-row {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .driver-row:hover td {
+            background: rgba(138, 43, 226, 0.1);
+            color: var(--gold);
         }
 
         .pos-cell {
@@ -366,6 +372,131 @@
             text-transform: uppercase;
         }
 
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 7, 11, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border: 1px solid var(--gold);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 550px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(138, 43, 226, 0.3);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.2s ease;
+        }
+
+        .modal-overlay.open .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--white);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 16px;
+        }
+
+        .modal-car-badge {
+            width: 50px;
+            height: 50px;
+            background: var(--surface-card);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 20px;
+            color: var(--gold);
+        }
+
+        .modal-title h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .modal-title p {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .stat-box {
+            background: var(--surface-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-box h4 {
+            color: var(--muted);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .stat-box .stat-val {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
         /* Footer */
         footer {
             background: var(--surface);
@@ -419,7 +550,7 @@
                     </div>
                     <div style="padding: 24px;">
                         <h4 style="font-family: 'Barlow Condensed'; font-size: 20px; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Playoff Race Heats Up Heading to Talladega</h4>
-                        <p style="color: var(--muted); line-height: 1.6; margin-bottom: 16px;">Drivers are locking in their setups and tuning their drafting strategies as the regular season reaches its climax. Check the standings to see who is currently leading the points chart.</p>
+                        <p style="color: var(--muted); line-height: 1.6; margin-bottom: 16px;">Drivers are locking in their setups and tuning their drafting strategies as the regular season reaches its climax. Click any driver in the standings to inspect their detailed stats.</p>
                         <p style="font-size: 13px; color: var(--purple); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Published by SRS Media Team</p>
                     </div>
                 </div>
@@ -443,7 +574,7 @@
         <div id="standings" class="section">
             <div class="section-header">
                 <h2>Championship Standings</h2>
-                <p>Current driver point standings loaded directly from league statistics database.</p>
+                <p>Click any driver below to view detailed stats including stage points, wins, top 5s, starts, poles, and average finish.</p>
             </div>
             <div class="card">
                 <table>
@@ -456,70 +587,8 @@
                             <th>Points</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td class="pos-cell">1</td>
-                            <td style="color: var(--muted);">#1</td>
-                            <td style="font-weight: 600;">Goofy</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
-                        <tr>
-                            <td class="pos-cell">2</td>
-                            <td style="color: var(--muted);">#2</td>
-                            <td style="font-weight: 600;">Papas</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
-                        <tr>
-                            <td class="pos-cell">3</td>
-                            <td style="color: var(--muted);">#11</td>
-                            <td style="font-weight: 600;">Leo</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
-                        <tr>
-                            <td class="pos-cell">4</td>
-                            <td style="color: var(--muted);">#12</td>
-                            <td style="font-weight: 600;">Chris</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
-                        <tr>
-                            <td class="pos-cell">5</td>
-                            <td style="color: var(--muted);">#19</td>
-                            <td style="font-weight: 600;">Bay</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
-                        <tr>
-                            <td class="pos-cell">6</td>
-                            <td style="color: var(--muted);">#22</td>
-                            <td style="font-weight: 600;">Keith</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
-                        <tr>
-                            <td class="pos-cell">7</td>
-                            <td style="color: var(--muted);">#25</td>
-                            <td style="font-weight: 600;">MKY</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
-                        <tr>
-                            <td class="pos-cell">8</td>
-                            <td style="color: var(--muted);">#32</td>
-                            <td style="font-weight: 600;">JP</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
-                        <tr>
-                            <td class="pos-cell">9</td>
-                            <td style="color: var(--muted);">#35</td>
-                            <td style="font-weight: 600;">Stunna</td>
-                            <td>0</td>
-                            <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">0</td>
-                        </tr>
+                    <tbody id="standings-tbody">
+                        <!-- Populated by JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -589,12 +658,107 @@
         </div>
     </main>
 
+    <!-- Driver Detail Modal -->
+    <div id="driver-modal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+            <div class="modal-header">
+                <div class="modal-car-badge" id="modal-car">#1</div>
+                <div class="modal-title">
+                    <h3 id="modal-name">Driver Name</h3>
+                    <p>SRS Series Competitor</p>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h4>Stage Points</h4>
+                    <div class="stat-val" id="modal-stage-pts">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Wins</h4>
+                    <div class="stat-val" id="modal-wins">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Top 5s</h4>
+                    <div class="stat-val" id="modal-top5">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Starts</h4>
+                    <div class="stat-val" id="modal-starts">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Poles</h4>
+                    <div class="stat-val" id="modal-poles">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Avg Finish</h4>
+                    <div class="stat-val" id="modal-avg-finish">0.0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <p>&copy; 2026 Stratus Racing Series (SRS). All Rights Reserved.</p>
     </footer>
 
     <script>
+        // Driver database synced with spreadsheet data
+        const drivers = [
+            { pos: 1, car: "#1", name: "Goofy", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 2, car: "#2", name: "Papas", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 3, car: "#11", name: "Leo", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 4, car: "#12", name: "Chris", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 5, car: "#19", name: "Bay", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 6, car: "#22", name: "Keith", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 7, car: "#25", name: "MKY", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 8, car: "#32", name: "JP", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 9, car: "#35", name: "Stunna", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" }
+        ];
+
+        // Render Standings Table
+        function renderStandings() {
+            const tbody = document.getElementById('standings-tbody');
+            tbody.innerHTML = '';
+            drivers.forEach(d => {
+                const tr = document.createElement('tr');
+                tr.className = 'driver-row';
+                tr.onclick = () => openDriverModal(d);
+                tr.innerHTML = `
+                    <td class="pos-cell">${d.pos}</td>
+                    <td style="color: var(--muted);">${d.car}</td>
+                    <td style="font-weight: 600; color: var(--white);">${d.name}</td>
+                    <td>${d.stagePts}</td>
+                    <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">${d.points}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Modal Controls
+        function openDriverModal(driver) {
+            document.getElementById('modal-car').innerText = driver.car;
+            document.getElementById('modal-name').innerText = driver.name;
+            document.getElementById('modal-stage-pts').innerText = driver.stagePts;
+            document.getElementById('modal-wins').innerText = driver.wins;
+            document.getElementById('modal-top5').innerText = driver.top5;
+            document.getElementById('modal-starts').innerText = driver.starts;
+            document.getElementById('modal-poles').innerText = driver.poles;
+            document.getElementById('modal-avg-finish').innerText = driver.avgFinish;
+
+            document.getElementById('driver-modal').classList.add('open');
+        }
+
+        function closeModal(event) {
+            document.getElementById('driver-modal').classList.remove('open');
+        }
+
+        function closeModalDirect() {
+            document.getElementById('driver-modal').classList.remove('open');
+        }
+
+        // Tab Switching
         function switchTab(tabId, btn) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -605,6 +769,11 @@
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // Initialize on load
+        window.onload = () => {
+            renderStandings();
+        };
     </script>
 </body>
 </html>
