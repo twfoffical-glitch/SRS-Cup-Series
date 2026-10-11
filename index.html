@@ -170,17 +170,6 @@
             margin-top: 4px;
         }
 
-        /* Grid Layouts */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 32px;
-        }
-
-        @media(max-width: 1024px) {
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-
         /* Cards & Tables */
         .card {
             background: var(--surface);
@@ -188,24 +177,6 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-        }
-
-        .card-header {
-            background: var(--surface-card);
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .card-header h3 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--gold);
         }
 
         table {
@@ -324,6 +295,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transition: all 0.2s;
+        }
+
+        .race-card:hover {
+            border-color: var(--purple);
+            transform: translateX(4px);
         }
 
         .race-info h4 {
@@ -351,6 +328,12 @@
             font-size: 14px;
             letter-spacing: 1px;
             text-transform: uppercase;
+        }
+
+        .race-badge.winner {
+            background: rgba(245, 197, 24, 0.15);
+            color: var(--gold);
+            border-color: rgba(245, 197, 24, 0.4);
         }
 
         /* Modal Overlay */
@@ -498,7 +481,6 @@
                 <button class="nav-btn active" onclick="switchTab('home', this)">Home</button>
                 <button class="nav-btn" onclick="switchTab('standings', this)">Standings</button>
                 <button class="nav-btn" onclick="switchTab('schedule', this)">Schedule</button>
-                <button class="nav-btn" onclick="switchTab('points', this)">Points Format</button>
             </nav>
         </div>
     </header>
@@ -538,42 +520,14 @@
             </div>
         </div>
 
-        <!-- SCHEDULE TAB -->
+        <!-- SCHEDULE TAB (Synced with Sheet Data) -->
         <div id="schedule" class="section">
             <div class="section-header">
                 <h2>SRS Race Schedule</h2>
-                <p>Full calendar of events and tracks for the current season.</p>
+                <p>Official race calendar synced directly with the league schedule database.</p>
             </div>
-            <div class="schedule-list">
-                <div class="race-card">
-                    <div class="race-info">
-                        <h4>SRS Daytona Kickoff</h4>
-                        <p>Daytona Superspeedway &bull; 2.500 Miles</p>
-                    </div>
-                    <div class="race-badge" style="color: var(--gold); border-color: var(--gold);">Completed</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- POINTS FORMAT TAB -->
-        <div id="points" class="section">
-            <div class="section-header">
-                <h2>Points Format System</h2>
-                <p>Official SRS point distribution system controlled via league database.</p>
-            </div>
-            <div class="card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Finishing Position</th>
-                            <th>Points Awarded</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="pos-cell">1st</td><td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">40 pts</td></tr>
-                        <tr><td class="pos-cell">2nd</td><td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">30 pts</td></tr>
-                    </tbody>
-                </table>
+            <div class="schedule-list" id="schedule-container">
+                <!-- Populated dynamically from Schedule sheet tab -->
             </div>
         </div>
     </main>
@@ -624,6 +578,7 @@
     </footer>
 
     <script>
+        // Driver Database
         const drivers = [
             { pos: 1, car: "#1", name: "Goofy", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
             { pos: 2, car: "#2", name: "Papas", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
@@ -634,6 +589,17 @@
             { pos: 7, car: "#25", name: "MKY", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
             { pos: 8, car: "#32", name: "JP", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
             { pos: 9, car: "#35", name: "Stunna", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" }
+        ];
+
+        // Schedule Database synced with Google Sheet Schedule tab
+        const scheduleData = [
+            { raceNo: "#1", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#2", name: "Daytona 500", location: "Daytona Superspeedway", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#3", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#4", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#5", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#6", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#7", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" }
         ];
 
         function renderStandings() {
@@ -652,6 +618,30 @@
                     <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">${d.points}</td>
                 `;
                 tbody.appendChild(tr);
+            });
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById('schedule-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            scheduleData.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'race-card';
+
+                const isCompleted = r.winner && r.winner !== "TBD";
+                const badgeClass = isCompleted ? "race-badge winner" : "race-badge";
+                const badgeText = isCompleted ? `Winner: ${r.winner}` : "Scheduled";
+
+                card.innerHTML = `
+                    <div class="race-info">
+                        <h4>Race ${r.raceNo}: ${r.name}</h4>
+                        <p>${r.location} &bull; Laps: ${r.laps} ${r.margin !== "TBD" ? `&bull; Margin: ${r.margin}` : ""}</p>
+                    </div>
+                    <div class="${badgeClass}">${badgeText}</div>
+                `;
+                container.appendChild(card);
             });
         }
 
@@ -682,7 +672,9 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Initialize rendering
         renderStandings();
+        renderSchedule();
     </script>
 </body>
 </html>
