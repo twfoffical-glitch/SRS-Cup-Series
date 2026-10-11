@@ -170,31 +170,124 @@
             margin-top: 4px;
         }
 
-        /* Cards & Tables */
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, rgba(18,16,24,0.9), rgba(138,43,226,0.15));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 50px 40px;
+            margin-bottom: 28px;
+        }
+
+        .hero h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 44px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.05;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+
+        .hero h2 span {
+            color: var(--gold);
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            max-width: 650px;
+        }
+
+        /* Up Next Race Box */
+        .next-race-card {
+            background: var(--surface-card);
+            border: 2px solid var(--gold);
+            border-radius: 14px;
+            padding: 28px 32px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.2);
+            position: relative;
+        }
+
+        .next-race-tag {
+            color: var(--gold);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .next-race-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 30px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+
+        .next-race-sub {
+            color: var(--muted);
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--bg);
+            border: none;
+            padding: 14px 28px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(245, 197, 24, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-sched-link {
+            background: rgba(138, 43, 226, 0.2);
+            color: #d1b3ff;
+            border: 1px solid var(--purple);
+            padding: 12px 24px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-sched-link:hover {
+            background: var(--purple);
+            color: var(--white);
+        }
+
+        /* Schedule List & Cards */
         .card {
             background: var(--surface);
             border: 1px solid var(--border-subtle);
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-        }
-
-        .card-header {
-            background: var(--surface-card);
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .card-header h3 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--gold);
         }
 
         table {
@@ -239,112 +332,6 @@
             width: 80px;
         }
 
-        /* Home Layout & Next Race Hero Card */
-        .hero {
-            background: linear-gradient(135deg, rgba(18,16,24,0.9), rgba(138,43,226,0.15));
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 60px 48px;
-            margin-bottom: 32px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 650px;
-        }
-
-        .hero h2 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 48px;
-            font-weight: 900;
-            text-transform: uppercase;
-            line-height: 1.05;
-            letter-spacing: 2px;
-            margin-bottom: 16px;
-        }
-
-        .hero h2 span {
-            color: var(--gold);
-        }
-
-        .hero p {
-            color: var(--muted);
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 28px;
-        }
-
-        .next-race-banner {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(245, 197, 24, 0.08));
-            border: 1px solid var(--gold);
-            border-radius: 12px;
-            padding: 24px 32px;
-            margin-bottom: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 0 25px rgba(245, 197, 24, 0.15);
-        }
-
-        .next-race-info h3 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 28px;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: var(--gold);
-        }
-
-        .next-race-info p {
-            color: var(--muted);
-            font-size: 15px;
-            margin-top: 4px;
-        }
-
-        .btn-primary {
-            background: var(--gold);
-            color: var(--bg);
-            border: none;
-            padding: 14px 32px;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(245, 197, 24, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: var(--gold-hover);
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--white);
-            border: 1px solid var(--border);
-            padding: 12px 24px;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-outline:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-        /* Schedule List */
         .schedule-list {
             display: flex;
             flex-direction: column;
@@ -409,7 +396,7 @@
             text-transform: uppercase;
         }
 
-        /* Modal Overlay */
+        /* Modals */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -450,10 +437,6 @@
             color: var(--muted);
             font-size: 28px;
             cursor: pointer;
-        }
-
-        .modal-close:hover {
-            color: var(--white);
         }
 
         .modal-header {
@@ -562,22 +545,21 @@
     <main>
         <!-- HOME TAB -->
         <div id="home" class="section active">
+            <!-- Hero Banner -->
             <div class="hero">
-                <div class="hero-content">
-                    <h2>Welcome to the <span>Stratus Racing Series</span></h2>
-                    <p>Experience peak competitive NASCAR stock car racing. Featuring state-of-the-art leagues, fierce rivalries, and our official points structure synced seamlessly with league management databases.</p>
-                    <button class="btn-primary" onclick="switchTab('standings', document.querySelectorAll('.nav-btn')[1])">View Standings</button>
-                </div>
+                <h2>Welcome to the <span>Stratus Racing Series</span></h2>
+                <p>Uhhhh Idk what to put here... we are a nascar ro racing leage ig?</p>
+                <button class="btn-primary" onclick="switchTab('standings', document.querySelectorAll('.nav-btn')[1])">View Standings</button>
             </div>
 
-            <!-- Featured Next Race Area -->
-            <div class="next-race-banner">
-                <div class="next-race-info">
-                    <span style="color: var(--purple); font-family: 'Barlow Condensed'; font-weight: 800; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;">Up Next on the Calendar</span>
-                    <h3 id="home-next-race-name">Race #2: Daytona 500</h3>
-                    <p id="home-next-race-details">Daytona Superspeedway &bull; Laps: TBD</p>
+            <!-- Up Next Race Featured Box -->
+            <div class="next-race-card">
+                <div>
+                    <span class="next-race-tag">🏁 Up Next on the Calendar</span>
+                    <div class="next-race-title" id="home-next-title">Race #2: Daytona 500</div>
+                    <div class="next-race-sub" id="home-next-sub">Daytona Superspeedway &bull; Total Laps: TBD</div>
                 </div>
-                <button class="btn-outline" onclick="switchTab('schedule', document.querySelectorAll('.nav-btn')[2])">Full Schedule & Results &rarr;</button>
+                <button class="btn-sched-link" onclick="switchTab('schedule', document.querySelectorAll('.nav-btn')[2])">Full Schedule & Results &rarr;</button>
             </div>
         </div>
 
@@ -598,9 +580,7 @@
                             <th>Points</th>
                         </tr>
                     </thead>
-                    <tbody id="standings-tbody">
-                        <tr><td colspan="5" style="text-align:center; color: var(--muted);">Loading standings from Google Sheet...</td></tr>
-                    </tbody>
+                    <tbody id="standings-tbody"></tbody>
                 </table>
             </div>
         </div>
@@ -611,9 +591,7 @@
                 <h2>SRS Race Schedule</h2>
                 <p>Click any race below to open detailed event details, including the race winner, date, time, and margin of victory.</p>
             </div>
-            <div class="schedule-list" id="schedule-container">
-                <p style="color: var(--muted); text-align: center; padding: 20px;">Loading schedule from Google Sheet...</p>
-            </div>
+            <div class="schedule-list" id="schedule-container"></div>
         </div>
     </main>
 
@@ -667,8 +645,29 @@
 
     <script>
         const SPREADSHEET_ID = '1b1CgkjFcCgTSMu5XYTYH5yWpEhRZGdAS-9eAg938H_g';
-        let driversData = [];
-        let scheduleData = [];
+
+        // Default local databases
+        let driversData = [
+            { pos: 1, car: "#1", name: "Goofy", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 2, car: "#2", name: "Papas", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 3, car: "#11", name: "Leo", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 4, car: "#12", name: "Chris", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 5, car: "#19", name: "Bay", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 6, car: "#22", name: "Keith", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 7, car: "#25", name: "MKY", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 8, car: "#32", name: "JP", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
+            { pos: 9, car: "#35", name: "Stunna", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" }
+        ];
+
+        let scheduleData = [
+            { raceNo: "#1", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#2", name: "Daytona 500", location: "Daytona Superspeedway", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#3", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#4", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#5", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#6", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#7", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" }
+        ];
 
         function parseCSV(text) {
             let lines = text.split('\n');
@@ -700,12 +699,12 @@
                 let pointsText = await pointsRes.text();
                 let pointsRows = parseCSV(pointsText);
 
-                driversData = [];
+                let parsedDrivers = [];
                 for (let i = 3; i < pointsRows.length; i++) {
                     let r = pointsRows[i];
                     if (r && r[4] && r[4].length > 0 && r[4] !== 'Driver') {
-                        driversData.push({
-                            pos: r[0] || (driversData.length + 1),
+                        parsedDrivers.push({
+                            pos: r[0] || (parsedDrivers.length + 1),
                             car: r[3] || '#',
                             name: r[4],
                             points: r[5] || '0',
@@ -718,7 +717,10 @@
                         });
                     }
                 }
-                renderStandings();
+                if (parsedDrivers.length > 0) {
+                    driversData = parsedDrivers;
+                    renderStandings();
+                }
 
                 // Fetch Schedule tab
                 let schedUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=Schedule`;
@@ -726,11 +728,11 @@
                 let schedText = await schedRes.text();
                 let schedRows = parseCSV(schedText);
 
-                scheduleData = [];
+                let parsedSchedule = [];
                 for (let i = 1; i < schedRows.length; i++) {
                     let r = schedRows[i];
                     if (r && r[1] && r[1].length > 0 && r[1] !== 'Race Name') {
-                        scheduleData.push({
+                        parsedSchedule.push({
                             raceNo: r[0] || `#${i}`,
                             name: r[1] || 'TBD',
                             location: r[2] || 'TBD',
@@ -742,115 +744,4 @@
                         });
                     }
                 }
-                renderSchedule();
-                updateHomeNextRace();
-
-            } catch (err) {
-                console.error("Error fetching live spreadsheet data:", err);
-            }
-        }
-
-        function renderStandings() {
-            const tbody = document.getElementById('standings-tbody');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            if (driversData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--muted);">No driver data found in sheet.</td></tr>`;
-                return;
-            }
-            driversData.forEach(d => {
-                const tr = document.createElement('tr');
-                tr.className = 'driver-row';
-                tr.onclick = () => openDriverModal(d);
-                tr.innerHTML = `
-                    <td class="pos-cell">${d.pos}</td>
-                    <td style="color: var(--muted);">${d.car}</td>
-                    <td style="font-weight: 600; color: var(--white);">${d.name}</td>
-                    <td>${d.stagePts}</td>
-                    <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">${d.points}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function renderSchedule() {
-            const container = document.getElementById('schedule-container');
-            if (!container) return;
-            container.innerHTML = '';
-            if (scheduleData.length === 0) {
-                container.innerHTML = `<p style="color: var(--muted); text-align: center; padding: 20px;">No schedule data found in sheet.</p>`;
-                return;
-            }
-
-            scheduleData.forEach(r => {
-                const card = document.createElement('div');
-                card.className = 'race-card';
-                card.onclick = () => openRaceModal(r);
-
-                const hasWinner = r.winner && r.winner !== "TBD" && r.winner !== "";
-
-                card.innerHTML = `
-                    <div class="race-info">
-                        <h4>Race ${r.raceNo}: ${r.name}</h4>
-                        <p>${r.location} &bull; Total Laps: ${r.laps}</p>
-                    </div>
-                    <div>
-                        ${hasWinner ? `<div class="winner-badge">Winner: ${r.winner}</div>` : `<div class="race-badge">View Event Details &rarr;</div>`}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function updateHomeNextRace() {
-            if (scheduleData.length > 0) {
-                // Find first upcoming race without a winner, or default to first race
-                const nextRace = scheduleData.find(r => !r.winner || r.winner === "TBD") || scheduleData[0];
-                document.getElementById('home-next-race-name').innerText = `Race ${nextRace.raceNo}: ${nextRace.name}`;
-                document.getElementById('home-next-race-details').innerText = `${nextRace.location} • Total Laps: ${nextRace.laps}`;
-            }
-        }
-
-        function openDriverModal(driver) {
-            document.getElementById('modal-car').innerText = driver.car;
-            document.getElementById('modal-name').innerText = driver.name;
-            document.getElementById('modal-stage-pts').innerText = driver.stagePts;
-            document.getElementById('modal-wins').innerText = driver.wins;
-            document.getElementById('modal-top5').innerText = driver.top5;
-            document.getElementById('modal-starts').innerText = driver.starts;
-            document.getElementById('modal-poles').innerText = driver.poles;
-            document.getElementById('modal-avg-finish').innerText = driver.avgFinish;
-            document.getElementById('driver-modal').classList.add('open');
-        }
-
-        function openRaceModal(race) {
-            document.getElementById('race-modal-no').innerText = race.raceNo;
-            document.getElementById('race-modal-title').innerText = race.name;
-            document.getElementById('race-modal-location').innerText = race.location;
-            document.getElementById('race-modal-winner').innerText = race.winner;
-            document.getElementById('race-modal-margin').innerText = race.margin;
-            document.getElementById('race-modal-date').innerText = race.date;
-            document.getElementById('race-modal-time').innerText = race.time;
-            document.getElementById('race-modal-laps').innerText = race.laps;
-            document.getElementById('race-modal').classList.add('open');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('open');
-        }
-
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
-            const targetSec = document.getElementById(tabId);
-            if (targetSec) targetSec.classList.add('active');
-            if (btn) btn.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Load live data on startup
-        fetchGoogleSheetData();
-    </script>
-</body>
-</html>
+                if (parsedSchedule.length > 0) {
