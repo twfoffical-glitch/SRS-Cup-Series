@@ -212,7 +212,6 @@
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 0 20px rgba(245, 197, 24, 0.2);
-            position: relative;
         }
 
         .next-race-tag {
@@ -545,10 +544,9 @@
     <main>
         <!-- HOME TAB -->
         <div id="home" class="section active">
-            <!-- Hero Banner -->
             <div class="hero">
                 <h2>Welcome to the <span>Stratus Racing Series</span></h2>
-                <p>Uhhhh Idk what to put here... we are a nascar ro racing leage ig?</p>
+                <p>Experience peak competitive NASCAR stock car racing. Featuring state-of-the-art leagues, fierce rivalries, and our official points structure synced seamlessly with league management databases.</p>
                 <button class="btn-primary" onclick="switchTab('standings', document.querySelectorAll('.nav-btn')[1])">View Standings</button>
             </div>
 
@@ -598,7 +596,7 @@
     <!-- Driver Detail Modal -->
     <div id="driver-modal" class="modal-overlay" onclick="closeModal('driver-modal')">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal('driver-modal')">&times;</button>
+            <button class="modal-close" onclick="closeModal('driver-modal')" style="position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: var(--muted); font-size: 28px; cursor: pointer;">&times;</button>
             <div class="modal-header">
                 <div class="modal-car-badge" id="modal-car">#1</div>
                 <div class="modal-title">
@@ -620,7 +618,7 @@
     <!-- Race Detail Modal -->
     <div id="race-modal" class="modal-overlay" onclick="closeModal('race-modal')">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal('race-modal')">&times;</button>
+            <button class="modal-close" onclick="closeModal('race-modal')" style="position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: var(--muted); font-size: 28px; cursor: pointer;">&times;</button>
             <div class="modal-header">
                 <div class="modal-car-badge" id="race-modal-no">#1</div>
                 <div class="modal-title">
@@ -646,7 +644,6 @@
     <script>
         const SPREADSHEET_ID = '1b1CgkjFcCgTSMu5XYTYH5yWpEhRZGdAS-9eAg938H_g';
 
-        // Default local databases
         let driversData = [
             { pos: 1, car: "#1", name: "Goofy", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
             { pos: 2, car: "#2", name: "Papas", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
@@ -693,7 +690,6 @@
 
         async function fetchGoogleSheetData() {
             try {
-                // Fetch Points/Stats tab
                 let pointsUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=Points/Stats`;
                 let pointsRes = await fetch(pointsUrl);
                 let pointsText = await pointsRes.text();
@@ -722,7 +718,6 @@
                     renderStandings();
                 }
 
-                // Fetch Schedule tab
                 let schedUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=Schedule`;
                 let schedRes = await fetch(schedUrl);
                 let schedText = await schedRes.text();
@@ -745,3 +740,112 @@
                     }
                 }
                 if (parsedSchedule.length > 0) {
+                    scheduleData = parsedSchedule;
+                    renderSchedule();
+                    updateNextRaceHero();
+                }
+
+            } catch (err) {
+                console.error("Error fetching live spreadsheet data:", err);
+            }
+        }
+
+        function renderStandings() {
+            const tbody = document.getElementById('standings-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            driversData.forEach(d => {
+                const tr = document.createElement('tr');
+                tr.className = 'driver-row';
+                tr.onclick = () => openDriverModal(d);
+                tr.innerHTML = `
+                    <td class="pos-cell">${d.pos}</td>
+                    <td style="color: var(--muted);">${d.car}</td>
+                    <td style="font-weight: 600; color: var(--white);">${d.name}</td>
+                    <td>${d.stagePts}</td>
+                    <td style="font-family: 'Barlow Condensed'; font-weight: 700; color: var(--gold); font-size: 18px;">${d.points}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById('schedule-container');
+            if (!container) return;
+            container.innerHTML = '';
+            scheduleData.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'race-card';
+                card.onclick = () => openRaceModal(r);
+
+                const hasWinner = r.winner && r.winner !== "TBD" && r.winner !== "";
+
+                card.innerHTML = `
+                    <div class="race-info">
+                        <h4>Race ${r.raceNo}: ${r.name}</h4>
+                        <p>${r.location} &bull; Total Laps: ${r.laps}</p>
+                    </div>
+                    <div>
+                        ${hasWinner ? `<div class="winner-badge">Winner: ${r.winner}</div>` : `<div class="race-badge">View Event Details &rarr;</div>`}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateNextRaceHero() {
+            if (scheduleData.length > 0) {
+                const nextRace = scheduleData.find(r => !r.winner || r.winner === "TBD") || scheduleData[0];
+                document.getElementById('home-next-title').innerText = `Race ${nextRace.raceNo}: ${nextRace.name}`;
+                document.getElementById('home-next-sub').innerText = `${nextRace.location} • Total Laps: ${nextRace.laps}`;
+            }
+        }
+
+        function openDriverModal(driver) {
+            document.getElementById('modal-car').innerText = driver.car;
+            document.getElementById('modal-name').innerText = driver.name;
+            document.getElementById('modal-stage-pts').innerText = driver.stagePts;
+            document.getElementById('modal-wins').innerText = driver.wins;
+            document.getElementById('modal-top5').innerText = driver.top5;
+            document.getElementById('modal-starts').innerText = driver.starts;
+            document.getElementById('modal-poles').innerText = driver.poles;
+            document.getElementById('modal-avg-finish').innerText = driver.avgFinish;
+            document.getElementById('driver-modal').classList.add('open');
+        }
+
+        function openRaceModal(race) {
+            document.getElementById('race-modal-no').innerText = race.raceNo;
+            document.getElementById('race-modal-title').innerText = race.name;
+            document.getElementById('race-modal-location').innerText = race.location;
+            document.getElementById('race-modal-winner').innerText = race.winner;
+            document.getElementById('race-modal-margin').innerText = race.margin;
+            document.getElementById('race-modal-date').innerText = race.date;
+            document.getElementById('race-modal-time').innerText = race.time;
+            document.getElementById('race-modal-laps').innerText = race.laps;
+            document.getElementById('race-modal').classList.add('open');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('open');
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            const targetSec = document.getElementById(tabId);
+            if (targetSec) targetSec.classList.add('active');
+            if (btn) btn.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize UI immediately
+        renderStandings();
+        renderSchedule();
+        updateNextRaceHero();
+
+        // Fetch live sheet updates
+        fetchGoogleSheetData();
+    </script>
+</body>
+</html>
