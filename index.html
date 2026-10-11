@@ -305,7 +305,7 @@
 
         .race-info h4 {
             font-family: 'Barlow Condensed', sans-serif;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -313,8 +313,30 @@
 
         .race-info p {
             color: var(--muted);
-            font-size: 13px;
-            margin-top: 2px;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .race-time-p {
+            font-size: 13px !important;
+            color: var(--gold) !important;
+            margin-top: 4px !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .race-meta-p {
+            font-size: 13px !important;
+            color: #d1b3ff !important;
+            margin-top: 6px !important;
+        }
+
+        .race-results {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
         }
 
         .race-badge {
@@ -330,10 +352,25 @@
             text-transform: uppercase;
         }
 
-        .race-badge.winner {
+        .winner-badge {
             background: rgba(245, 197, 24, 0.15);
             color: var(--gold);
-            border-color: rgba(245, 197, 24, 0.4);
+            border: 1px solid rgba(245, 197, 24, 0.4);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .margin-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         /* Modal Overlay */
@@ -524,7 +561,7 @@
         <div id="schedule" class="section">
             <div class="section-header">
                 <h2>SRS Race Schedule</h2>
-                <p>Official race calendar synced directly with the league schedule database.</p>
+                <p>Official race calendar synced directly with the league schedule database, including race dates, times, winners, and margins of victory.</p>
             </div>
             <div class="schedule-list" id="schedule-container">
                 <!-- Populated dynamically from Schedule sheet tab -->
@@ -593,13 +630,13 @@
 
         // Schedule Database synced with Google Sheet Schedule tab
         const scheduleData = [
-            { raceNo: "#1", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#2", name: "Daytona 500", location: "Daytona Superspeedway", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#3", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#4", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#5", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#6", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#7", name: "TBD", location: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" }
+            { raceNo: "#1", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#2", name: "Daytona 500", location: "Daytona Superspeedway", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#3", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#4", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#5", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#6", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
+            { raceNo: "#7", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" }
         ];
 
         function renderStandings() {
@@ -630,16 +667,22 @@
                 const card = document.createElement('div');
                 card.className = 'race-card';
 
-                const isCompleted = r.winner && r.winner !== "TBD";
-                const badgeClass = isCompleted ? "race-badge winner" : "race-badge";
-                const badgeText = isCompleted ? `Winner: ${r.winner}` : "Scheduled";
+                const hasWinner = r.winner && r.winner !== "TBD";
+                const hasMargin = r.margin && r.margin !== "TBD";
+                const hasDate = r.date && r.date !== "TBD";
+                const hasTime = r.time && r.time !== "TBD";
 
                 card.innerHTML = `
                     <div class="race-info">
                         <h4>Race ${r.raceNo}: ${r.name}</h4>
-                        <p>${r.location} &bull; Laps: ${r.laps} ${r.margin !== "TBD" ? `&bull; Margin: ${r.margin}` : ""}</p>
+                        <p>${r.location} &bull; Total Laps: ${r.laps}</p>
+                        ${(hasDate || hasTime) ? `<p class="race-time-p">📅 ${hasDate ? r.date : 'TBD'} ${hasTime ? `&bull; ⏰ ${r.time}` : ''}</p>` : ''}
+                        ${hasWinner ? `<p class="race-meta-p">Winner: <strong>${r.winner}</strong>${hasMargin ? `&bull; Margin: <strong>${r.margin}</strong>` : ''}</p>` : ''}
                     </div>
-                    <div class="${badgeClass}">${badgeText}</div>
+                    <div class="race-results">
+                        ${hasWinner ? `<div class="winner-badge">Winner: ${r.winner}</div>` : `<div class="race-badge">Upcoming</div>`}
+                        ${hasMargin ? `<div class="margin-label">Margin: ${r.margin}</div>` : ''}
+                    </div>
                 `;
                 container.appendChild(card);
             });
