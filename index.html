@@ -295,12 +295,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
         .race-card:hover {
-            border-color: var(--purple);
+            border-color: var(--gold);
             transform: translateX(4px);
+            background: rgba(138, 43, 226, 0.08);
         }
 
         .race-info h4 {
@@ -315,28 +317,6 @@
             color: var(--muted);
             font-size: 14px;
             margin-top: 4px;
-        }
-
-        .race-time-p {
-            font-size: 13px !important;
-            color: var(--gold) !important;
-            margin-top: 4px !important;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .race-meta-p {
-            font-size: 13px !important;
-            color: #d1b3ff !important;
-            margin-top: 6px !important;
-        }
-
-        .race-results {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
         }
 
         .race-badge {
@@ -361,14 +341,6 @@
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
             font-size: 14px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .margin-label {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 13px;
-            color: var(--muted);
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -460,7 +432,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 16px;
         }
 
@@ -484,7 +456,7 @@
 
         .stat-box .stat-val {
             font-family: 'Barlow Condensed', sans-serif;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             color: var(--gold);
         }
@@ -561,18 +533,16 @@
         <div id="schedule" class="section">
             <div class="section-header">
                 <h2>SRS Race Schedule</h2>
-                <p>Official race calendar synced directly with the league schedule database, including race dates, times, winners, and margins of victory.</p>
+                <p>Click any race below to open detailed event details, including the race winner, date, time, and margin of victory.</p>
             </div>
-            <div class="schedule-list" id="schedule-container">
-                <!-- Populated dynamically from Schedule sheet tab -->
-            </div>
+            <div class="schedule-list" id="schedule-container"></div>
         </div>
     </main>
 
     <!-- Driver Detail Modal -->
-    <div id="driver-modal" class="modal-overlay" onclick="closeModal()">
+    <div id="driver-modal" class="modal-overlay" onclick="closeModal('driver-modal')">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <button class="modal-close" onclick="closeModal('driver-modal')">&times;</button>
             <div class="modal-header">
                 <div class="modal-car-badge" id="modal-car">#1</div>
                 <div class="modal-title">
@@ -580,7 +550,7 @@
                     <p>SRS Series Competitor</p>
                 </div>
             </div>
-            <div class="stats-grid">
+            <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
                 <div class="stat-box">
                     <h4>Stage Points</h4>
                     <div class="stat-val" id="modal-stage-pts">0</div>
@@ -604,6 +574,42 @@
                 <div class="stat-box">
                     <h4>Avg Finish</h4>
                     <div class="stat-val" id="modal-avg-finish">0.0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Race Detail Modal -->
+    <div id="race-modal" class="modal-overlay" onclick="closeModal('race-modal')">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal('race-modal')">&times;</button>
+            <div class="modal-header">
+                <div class="modal-car-badge" id="race-modal-no">#1</div>
+                <div class="modal-title">
+                    <h3 id="race-modal-title">Race Name</h3>
+                    <p id="race-modal-location">Location</p>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h4>Winner</h4>
+                    <div class="stat-val" id="race-modal-winner">TBD</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Margin of Victory</h4>
+                    <div class="stat-val" id="race-modal-margin">TBD</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Race Date</h4>
+                    <div class="stat-val" id="race-modal-date">TBD</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Race Time</h4>
+                    <div class="stat-val" id="race-modal-time">TBD</div>
+                </div>
+                <div class="stat-box" style="grid-column: span 2;">
+                    <h4>Total Laps</h4>
+                    <div class="stat-val" id="race-modal-laps">TBD</div>
                 </div>
             </div>
         </div>
@@ -666,22 +672,17 @@
             scheduleData.forEach(r => {
                 const card = document.createElement('div');
                 card.className = 'race-card';
+                card.onclick = () => openRaceModal(r);
 
                 const hasWinner = r.winner && r.winner !== "TBD";
-                const hasMargin = r.margin && r.margin !== "TBD";
-                const hasDate = r.date && r.date !== "TBD";
-                const hasTime = r.time && r.time !== "TBD";
 
                 card.innerHTML = `
                     <div class="race-info">
                         <h4>Race ${r.raceNo}: ${r.name}</h4>
                         <p>${r.location} &bull; Total Laps: ${r.laps}</p>
-                        ${(hasDate || hasTime) ? `<p class="race-time-p">📅 ${hasDate ? r.date : 'TBD'} ${hasTime ? `&bull; ⏰ ${r.time}` : ''}</p>` : ''}
-                        ${hasWinner ? `<p class="race-meta-p">Winner: <strong>${r.winner}</strong>${hasMargin ? `&bull; Margin: <strong>${r.margin}</strong>` : ''}</p>` : ''}
                     </div>
-                    <div class="race-results">
-                        ${hasWinner ? `<div class="winner-badge">Winner: ${r.winner}</div>` : `<div class="race-badge">Upcoming</div>`}
-                        ${hasMargin ? `<div class="margin-label">Margin: ${r.margin}</div>` : ''}
+                    <div>
+                        ${hasWinner ? `<div class="winner-badge">Winner: ${r.winner}</div>` : `<div class="race-badge">View Event Details &rarr;</div>`}
                     </div>
                 `;
                 container.appendChild(card);
@@ -701,8 +702,21 @@
             document.getElementById('driver-modal').classList.add('open');
         }
 
-        function closeModal() {
-            document.getElementById('driver-modal').classList.remove('open');
+        function openRaceModal(race) {
+            document.getElementById('race-modal-no').innerText = race.raceNo;
+            document.getElementById('race-modal-title').innerText = race.name;
+            document.getElementById('race-modal-location').innerText = race.location;
+            document.getElementById('race-modal-winner').innerText = race.winner;
+            document.getElementById('race-modal-margin').innerText = race.margin;
+            document.getElementById('race-modal-date').innerText = race.date;
+            document.getElementById('race-modal-time').innerText = race.time;
+            document.getElementById('race-modal-laps').innerText = race.laps;
+
+            document.getElementById('race-modal').classList.add('open');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('open');
         }
 
         function switchTab(tabId, btn) {
