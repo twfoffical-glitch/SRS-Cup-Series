@@ -524,18 +524,22 @@
                             <th>Points</th>
                         </tr>
                     </thead>
-                    <tbody id="standings-tbody"></tbody>
+                    <tbody id="standings-tbody">
+                        <tr><td colspan="5" style="text-align:center; color: var(--muted);">Loading standings from Google Sheet...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- SCHEDULE TAB (Synced with Sheet Data) -->
+        <!-- SCHEDULE TAB -->
         <div id="schedule" class="section">
             <div class="section-header">
                 <h2>SRS Race Schedule</h2>
                 <p>Click any race below to open detailed event details, including the race winner, date, time, and margin of victory.</p>
             </div>
-            <div class="schedule-list" id="schedule-container"></div>
+            <div class="schedule-list" id="schedule-container">
+                <p style="color: var(--muted); text-align: center; padding: 20px;">Loading schedule from Google Sheet...</p>
+            </div>
         </div>
     </main>
 
@@ -551,30 +555,12 @@
                 </div>
             </div>
             <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
-                <div class="stat-box">
-                    <h4>Stage Points</h4>
-                    <div class="stat-val" id="modal-stage-pts">0</div>
-                </div>
-                <div class="stat-box">
-                    <h4>Wins</h4>
-                    <div class="stat-val" id="modal-wins">0</div>
-                </div>
-                <div class="stat-box">
-                    <h4>Top 5s</h4>
-                    <div class="stat-val" id="modal-top5">0</div>
-                </div>
-                <div class="stat-box">
-                    <h4>Starts</h4>
-                    <div class="stat-val" id="modal-starts">0</div>
-                </div>
-                <div class="stat-box">
-                    <h4>Poles</h4>
-                    <div class="stat-val" id="modal-poles">0</div>
-                </div>
-                <div class="stat-box">
-                    <h4>Avg Finish</h4>
-                    <div class="stat-val" id="modal-avg-finish">0.0</div>
-                </div>
+                <div class="stat-box"><h4>Stage Points</h4><div class="stat-val" id="modal-stage-pts">0</div></div>
+                <div class="stat-box"><h4>Wins</h4><div class="stat-val" id="modal-wins">0</div></div>
+                <div class="stat-box"><h4>Top 5s</h4><div class="stat-val" id="modal-top5">0</div></div>
+                <div class="stat-box"><h4>Starts</h4><div class="stat-val" id="modal-starts">0</div></div>
+                <div class="stat-box"><h4>Poles</h4><div class="stat-val" id="modal-poles">0</div></div>
+                <div class="stat-box"><h4>Avg Finish</h4><div class="stat-val" id="modal-avg-finish">0.0</div></div>
             </div>
         </div>
     </div>
@@ -591,26 +577,11 @@
                 </div>
             </div>
             <div class="stats-grid">
-                <div class="stat-box">
-                    <h4>Winner</h4>
-                    <div class="stat-val" id="race-modal-winner">TBD</div>
-                </div>
-                <div class="stat-box">
-                    <h4>Margin of Victory</h4>
-                    <div class="stat-val" id="race-modal-margin">TBD</div>
-                </div>
-                <div class="stat-box">
-                    <h4>Race Date</h4>
-                    <div class="stat-val" id="race-modal-date">TBD</div>
-                </div>
-                <div class="stat-box">
-                    <h4>Race Time</h4>
-                    <div class="stat-val" id="race-modal-time">TBD</div>
-                </div>
-                <div class="stat-box" style="grid-column: span 2;">
-                    <h4>Total Laps</h4>
-                    <div class="stat-val" id="race-modal-laps">TBD</div>
-                </div>
+                <div class="stat-box"><h4>Winner</h4><div class="stat-val" id="race-modal-winner">TBD</div></div>
+                <div class="stat-box"><h4>Margin of Victory</h4><div class="stat-val" id="race-modal-margin">TBD</div></div>
+                <div class="stat-box"><h4>Race Date</h4><div class="stat-val" id="race-modal-date">TBD</div></div>
+                <div class="stat-box"><h4>Race Time</h4><div class="stat-val" id="race-modal-time">TBD</div></div>
+                <div class="stat-box" style="grid-column: span 2;"><h4>Total Laps</h4><div class="stat-val" id="race-modal-laps">TBD</div></div>
             </div>
         </div>
     </div>
@@ -621,35 +592,101 @@
     </footer>
 
     <script>
-        // Driver Database
-        const drivers = [
-            { pos: 1, car: "#1", name: "Goofy", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
-            { pos: 2, car: "#2", name: "Papas", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
-            { pos: 3, car: "#11", name: "Leo", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
-            { pos: 4, car: "#12", name: "Chris", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
-            { pos: 5, car: "#19", name: "Bay", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
-            { pos: 6, car: "#22", name: "Keith", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
-            { pos: 7, car: "#25", name: "MKY", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
-            { pos: 8, car: "#32", name: "JP", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" },
-            { pos: 9, car: "#35", name: "Stunna", stagePts: 0, points: 0, wins: 0, top5: 0, starts: 0, poles: 0, avgFinish: "0.0" }
-        ];
+        const SPREADSHEET_ID = '1b1CgkjFcCgTSMu5XYTYH5yWpEhRZGdAS-9eAg938H_g';
+        let driversData = [];
+        let scheduleData = [];
 
-        // Schedule Database synced with Google Sheet Schedule tab
-        const scheduleData = [
-            { raceNo: "#1", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#2", name: "Daytona 500", location: "Daytona Superspeedway", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#3", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#4", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#5", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#6", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" },
-            { raceNo: "#7", name: "TBD", location: "TBD", date: "TBD", time: "TBD", laps: "TBD", winner: "TBD", margin: "TBD" }
-        ];
+        // Simple CSV Parser helper
+        function parseCSV(text) {
+            let lines = text.split('\n');
+            return lines.map(line => {
+                let row = [];
+                let inQuote = false;
+                let entry = '';
+                for (let i = 0; i < line.length; i++) {
+                    let char = line[i];
+                    if (char === '"') {
+                        inQuote = !inQuote;
+                    } else if (char === ',' && !inQuote) {
+                        row.push(entry.trim());
+                        entry = '';
+                    } else {
+                        entry += char;
+                    }
+                }
+                row.push(entry.trim());
+                return row;
+            });
+        }
+
+        // Fetch Live Data from Google Sheet CSV exports
+        async function fetchGoogleSheetData() {
+            try {
+                // Fetch Points/Stats tab
+                let pointsUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=Points/Stats`;
+                let pointsRes = await fetch(pointsUrl);
+                let pointsText = await pointsRes.text();
+                let pointsRows = parseCSV(pointsText);
+
+                driversData = [];
+                // Process rows starting after headers
+                for (let i = 3; i < pointsRows.length; i++) {
+                    let r = pointsRows[i];
+                    if (r && r[4] && r[4].length > 0 && r[4] !== 'Driver') {
+                        driversData.push({
+                            pos: r[0] || (driversData.length + 1),
+                            car: r[3] || '#',
+                            name: r[4],
+                            points: r[5] || '0',
+                            stagePts: r[7] || '0',
+                            wins: r[8] || '0',
+                            top5: r[9] || '0',
+                            starts: r[18] || '0',
+                            poles: r[12] || '0',
+                            avgFinish: r[21] || '0.0'
+                        });
+                    }
+                }
+                renderStandings();
+
+                // Fetch Schedule tab
+                let schedUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=Schedule`;
+                let schedRes = await fetch(schedUrl);
+                let schedText = await schedRes.text();
+                let schedRows = parseCSV(schedText);
+
+                scheduleData = [];
+                for (let i = 1; i < schedRows.length; i++) {
+                    let r = schedRows[i];
+                    if (r && r[1] && r[1].length > 0 && r[1] !== 'Race Name') {
+                        scheduleData.push({
+                            raceNo: r[0] || `#${i}`,
+                            name: r[1] || 'TBD',
+                            location: r[2] || 'TBD',
+                            laps: r[3] || 'TBD',
+                            winner: r[4] || 'TBD',
+                            margin: r[5] || 'TBD',
+                            date: r[6] || 'TBD',
+                            time: r[7] || 'TBD'
+                        });
+                    }
+                }
+                renderSchedule();
+
+            } catch (err) {
+                console.error("Error fetching live spreadsheet data:", err);
+            }
+        }
 
         function renderStandings() {
             const tbody = document.getElementById('standings-tbody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            drivers.forEach(d => {
+            if (driversData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--muted);">No driver data found in sheet.</td></tr>`;
+                return;
+            }
+            driversData.forEach(d => {
                 const tr = document.createElement('tr');
                 tr.className = 'driver-row';
                 tr.onclick = () => openDriverModal(d);
@@ -668,13 +705,17 @@
             const container = document.getElementById('schedule-container');
             if (!container) return;
             container.innerHTML = '';
+            if (scheduleData.length === 0) {
+                container.innerHTML = `<p style="color: var(--muted); text-align: center; padding: 20px;">No schedule data found in sheet.</p>`;
+                return;
+            }
 
             scheduleData.forEach(r => {
                 const card = document.createElement('div');
                 card.className = 'race-card';
                 card.onclick = () => openRaceModal(r);
 
-                const hasWinner = r.winner && r.winner !== "TBD";
+                const hasWinner = r.winner && r.winner !== "TBD" && r.winner !== "";
 
                 card.innerHTML = `
                     <div class="race-info">
@@ -698,7 +739,6 @@
             document.getElementById('modal-starts').innerText = driver.starts;
             document.getElementById('modal-poles').innerText = driver.poles;
             document.getElementById('modal-avg-finish').innerText = driver.avgFinish;
-
             document.getElementById('driver-modal').classList.add('open');
         }
 
@@ -711,7 +751,6 @@
             document.getElementById('race-modal-date').innerText = race.date;
             document.getElementById('race-modal-time').innerText = race.time;
             document.getElementById('race-modal-laps').innerText = race.laps;
-
             document.getElementById('race-modal').classList.add('open');
         }
 
@@ -729,9 +768,8 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Initialize rendering
-        renderStandings();
-        renderSchedule();
+        // Load live data on startup
+        fetchGoogleSheetData();
     </script>
 </body>
 </html>
